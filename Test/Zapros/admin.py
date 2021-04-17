@@ -22,9 +22,9 @@ class ServersAdmin(admin.ModelAdmin):
     search_fields = ('id', 'payday')
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title1')
-    list_display_links = ('id', 'title1')
-    search_fields = ('id', 'title1')
+    list_display = ('id', 'pay_period')
+    list_display_links = ('id', 'pay_period')
+    search_fields = ('id', 'pay_period')
 
 admin.site.register(tarif, TarifAdmin)
 admin.site.register(users, UsersAdmin)

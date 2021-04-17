@@ -2,20 +2,28 @@ from .models import tarif, users, servers, test
 
 from rest_framework import viewsets, permissions
 
-from .Serializers import tarifsSerializer, usersSerializer, serversSerializer, tarifgroupSerializer
+from .Serializers import tarifsSerializer, usersSerializer, serversSerializer, tarifgroupSerializer, keySerializer
 from rest_framework.response import Response
 
 class serversViewSet(viewsets.ModelViewSet):
-    for e in servers.objects.all():
-        print(e.user_nom)
+
     queryset = servers.objects.all()
 
     serializer_class = serversSerializer
 
 
+    action_to_serializer = {
+        "list": keySerializer,
+        "retrieve": keySerializer,
+    }
+
+    def get_serializer_class(self):
+        return self.action_to_serializer.get(self.action, self.serializer_class)
+
+
 
 class tarifsViewSet(viewsets.ModelViewSet):
-    queryset = tarif.objects.filter(tarif_group_id__lte=2)
+    queryset = tarif.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -36,15 +44,16 @@ class tarifGroupViewSet(viewsets.ModelViewSet):
     queryset = test.objects.all()
 
 
-    def list(self, request):
+    """def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
         serializer = tarifgroupSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data)"""
 
     permission_classes = [
         permissions.AllowAny
     ]
     serializer_class = tarifgroupSerializer
+
 
 

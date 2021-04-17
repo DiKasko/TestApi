@@ -2,13 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class servers(models.Model):
-    user_nom = models.ManyToManyField('users',null=True, verbose_name='Пользователь')
-    tarif_nom = models.ManyToManyField('tarif', null=True, verbose_name='Тариф')
-    payday = models.DateField(verbose_name='payday', null=False)
-    tarif_g_id = models.ManyToManyField('test', null=True, verbose_name='Тариф1')
-    def __int__(self):
-        return self.user_nom
+
 
 class tarif(models.Model):
 
@@ -33,11 +27,20 @@ class users(models.Model):
         return self.login
 
 class test(models.Model):
-    title1 = models.CharField(max_length = 255, verbose_name='title', null=True)
-    use = models.ManyToManyField('tarif', null=True, verbose_name='Тариф')
+    pay_period = models.CharField(max_length = 255, verbose_name='1 месяц', null=True)
+    pay_period3 = models.CharField(max_length=255, verbose_name='3 месяц', null=True)
+    pay_period6 = models.CharField(max_length=255, verbose_name='6 месяц', null=True)
+    pay_period12 = models.CharField(max_length=255, verbose_name='12 месяц', null=True)
 
-    def display_test(self):
-        """Creates a string for the Genre. This is required to display genre in Admin."""
-        return ', '.join([tarif.tarif_group_id for tarif in self.tarif.all()[:3]])
+    def __int__(self):
+        return self.id
 
-    display_test.short_description = 'tarif'
+
+
+class servers(models.Model):
+    user_id = models.ForeignKey('users', verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
+    tarif_id = models.ForeignKey('tarif', null=True, verbose_name='Тариф',on_delete=models.CASCADE)
+    payday = models.DateField(verbose_name='payday', null=False)
+    tarif_group_id = models.ForeignKey('test', null=True, verbose_name='Тариф',on_delete=models.CASCADE)
+    def __int__(self):
+        return f"{self.login} из категории \"{self.users.login}\""
