@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  tarif, users, servers
+from .models import  tarif, users, servers, test
 
 # Register your models here.
 
@@ -21,7 +21,12 @@ class ServersAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'payday')
     search_fields = ('id', 'payday')
 
+class TestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title1')
+    list_display_links = ('id', 'title1')
+    search_fields = ('id', 'title1')
 
 admin.site.register(tarif, TarifAdmin)
 admin.site.register(users, UsersAdmin)
 admin.site.register(servers, ServersAdmin)
+admin.site.register(test, TestAdmin)
